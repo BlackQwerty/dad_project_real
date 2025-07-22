@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lost & Found | University Reporter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- RESET ---------- */
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:#333;line-height:1.6}
+
+        /* ---------- NAVBAR ---------- */
+        .navbar{position:fixed;top:0;width:100%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08);z-index:1000}
+        .nav-container{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:15px 20px}
+        .logo{font-size:24px;font-weight:700;color:#3498db;display:flex;align-items:center;gap:10px}
+        .logo::before{content:"📦";font-size:28px}
+        .nav-links{display:flex;list-style:none;gap:30px}
+        .nav-link{color:#495057;font-weight:500;padding:10px 15px;border-radius:8px;cursor:pointer;transition:all .3s}
+        .nav-link:hover{background:#e9ecef;color:#3498db;transform:translateY(-1px)}
+        .nav-link.active{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff}
+        .btn-nav {
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg,#3498db,#2980b9);
+    transition: all .3s;
+}
+.btn-nav:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52,152,219,.4);
+}
+.btn-nav.active {
+    background: linear-gradient(135deg,#2980b9,#1f4e79);
+}
+
+        /* ---------- MAIN LAYOUT ---------- */
+        .main-content{margin-top:80px;min-height:calc(100vh - 80px);padding:40px 20px;max-width:1200px;margin-left:auto;margin-right:auto}
+        .page{display:none;animation:fadeIn .3s}
+        .page.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ---------- HOME ---------- */
+        .hero{text-align:center;padding:60px 20px;background:linear-gradient(135deg,#e3f2fd 0%,#f8f9fa 100%);border-radius:20px;margin-bottom:40px}
+        .hero-title{font-size:48px;font-weight:700;color:#2c3e50;margin-bottom:15px}
+        .hero-subtitle{font-size:20px;color:#6c757d;margin-bottom:30px}
+        .hero-buttons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+        .btn{padding:14px 32px;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
+        .btn-primary{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff}
+        .btn-success{background:linear-gradient(135deg,#28a745,#20c997);color:#fff}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.2)}
+
+        /* ---------- BACK BUTTON ---------- */
+        .back{display:inline-flex;align-items:center;gap:8px;margin-bottom:25px;padding:10px 20px;background:#fff;border:2px solid #e1e8ed;border-radius:10px;color:#495057;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s}
+        .back:hover{background:#e9ecef;border-color:#3498db;color:#3498db;transform:translateX(-3px)}
+        .back::before{content:"←";font-size:16px}
+
+        /* ---------- FORMS ---------- */
+        .form-container{background:#fff;padding:40px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08);max-width:600px;margin:0 auto}
+        .form-title{font-size:28px;font-weight:700;color:#2c3e50;margin-bottom:30px;text-align:center}
+        .form-group{margin-bottom:25px}
+        .form-label{display:block;margin-bottom:8px;font-weight:600;color:#495057;font-size:15px}
+        .form-input,.form-select,.form-textarea{width:100%;padding:14px 18px;border:2px solid #e1e8ed;border-radius:10px;font-size:16px;background:#fafbfc;font-family:inherit;transition:all .3s}
+        .form-textarea{resize:vertical;min-height:100px}
+        .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:#3498db;background:#fff;box-shadow:0 0 0 3px rgba(52,152,219,.1)}
+        .file-label{display:block;padding:12px 24px;background:#f8f9fa;border:2px dashed #dee2e6;border-radius:10px;cursor:pointer;text-align:center;transition:all .3s}
+        .file-label:hover{border-color:#3498db;background:#e3f2fd}
+        .file-label input[type=file]{display:none}
+
+        /* ---------- CARDS ---------- */
+        .search-filters{background:#fff;padding:25px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08);margin-bottom:30px;display:flex;gap:20px;flex-wrap:wrap;align-items:end}
+        .search-input{width:100%;padding:12px 18px;border:2px solid #e1e8ed;border-radius:10px;background:#fafbfc}
+        .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px}
+        .card{background:#fff;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08);overflow:hidden;transition:all .3s;cursor:pointer}
+        .card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,.15)}
+        .card-image{height:200px;background:linear-gradient(135deg,#e3f2fd,#f8f9fa);display:flex;align-items:center;justify-content:center;font-size:48px}
+        .card-content{padding:20px}
+        .card-title{font-size:18px;font-weight:700;color:#2c3e50;margin-bottom:10px}
+        .card-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+        .card-badge.lost{background:#f8d7da;color:#721c24}
+        .card-badge.found{background:#d1ecf1;color:#0c5460}
+        .card-info{display:flex;flex-direction:column;gap:8px;font-size:14px;color:#6c757d}
+
+        /* ---------- RESPONSIVE ---------- */
+        @media(max-width:768px){
+            .nav-container{flex-direction:column;gap:15px}
+            .hero-title{font-size:36px}
+            .search-filters{flex-direction:column}
+            .cards-grid{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+
+<!---------- NAVBAR ---------->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Lost & Found</div>
+        <div class="nav-links">
+            <button class="btn-nav active" onclick="navigateTo('homePage')">Home</button>
+            <button class="btn-nav" onclick="navigateTo('reportLostPage')">Report Lost Item</button>
+            <button class="btn-nav" onclick="navigateTo('reportFoundPage')">Report Found Item</button>
+            <button class="btn-nav" onclick="navigateTo('viewReportsPage')">View Reports</button>
+        </div>
+    </div>
+</nav>
+
+<!---------- MAIN CONTENT ---------->
+<main class="main-content">
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="homePage">
+        <div class="hero">
+            <h1 class="hero-title">University Lost & Found</h1>
+            <p class="hero-subtitle">Report lost or found items and help reunite them with their owners</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="navigateTo('reportLostPage')">Report Lost Item</button>
+                <button class="btn btn-success" onclick="navigateTo('reportFoundPage')">Report Found Item</button>
+            </div>
+        </div>
+
+        <div style="text-align:center;padding:40px">
+            <h2 style="color:#2c3e50;margin-bottom:20px">How It Works</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin-top:30px">
+                <div style="padding:30px;background:#fff;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08)">
+                    <div style="font-size:48px;margin-bottom:15px">📝</div><h3 style="color:#3498db;margin-bottom:10px">Report</h3><p style="color:#6c757d">Report lost or found items with details and photos</p>
+                </div>
+                <div style="padding:30px;background:#fff;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08)">
+                    <div style="font-size:48px;margin-bottom:15px">🔍</div><h3 style="color:#3498db;margin-bottom:10px">Search</h3><p style="color:#6c757d">Browse and search through all reported items</p>
+                </div>
+                <div style="padding:30px;background:#fff;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08)">
+                    <div style="font-size:48px;margin-bottom:15px">🤝</div><h3 style="color:#3498db;margin-bottom:10px">Connect</h3><p style="color:#6c757d">Help reunite items with their rightful owners</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REPORT LOST ITEM PAGE -->
+    <div class="page" id="reportLostPage">
+        <button class="back" onclick="navigateTo('homePage')">Back</button>
+        <div class="form-container">
+            <h2 class="form-title">Report Lost Item</h2>
+            <form id="lostForm">
+                <div class="form-group">
+                    <label class="form-label">Item Name</label>
+                    <input class="form-input" name="name" placeholder="e.g., iPhone 13 Pro" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" name="category" required>
+                        <option value="">Select category</option>
+                        <option>Electronics</option><option>Clothing</option><option>Documents</option>
+                        <option>Accessories</option><option>Books</option><option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" name="description" placeholder="Describe your lost item..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location Where Lost</label>
+                    <select class="form-select" name="location" required>
+                        <option value="">Select location</option>
+                        <option>Library</option><option>Cafeteria</option><option>Gymnasium</option>
+                        <option>Science Building</option>
+                        <option>Student Center</option>
+                        <option>Parking Lot</option>
+                        <option>Dormitory</option><option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date Lost</label>
+                    <input type="date" class="form-input" name="dateReported" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Upload Image</label>
+                    <label class="file-label">
+                        <input type="file" id="imageFile" accept="image/*" required>
+                        Choose file or drag & drop here
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%">Report Lost Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- REPORT FOUND ITEM PAGE -->
+    <div class="page" id="reportFoundPage">
+        <button class="back" onclick="navigateTo('homePage')">Back</button>
+        <div class="form-container">
+            <h2 class="form-title">Report Found Item</h2>
+            <form id="foundForm">
+                <div class="form-group">
+                    <label class="form-label">Item Name</label>
+                    <input name="itemName" class="form-input" placeholder="e.g., Black Backpack" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-select" required>
+                        <option value="">Select category</option>
+                        <option>Electronics</option>
+                        <option>Clothing</option>
+                        <option>Documents</option>
+                        <option>Accessories</option>
+                        <option>Books</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-textarea" placeholder="Describe the found item..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location Where Found</label>
+                    <select name="location" class="form-select" required>
+                        <option value="">Select location</option>
+                        <option>Library</option>
+                        <option>Cafeteria</option>
+                        <option>Gymnasium</option>
+                        <option>Science Building</option>
+                        <option>Student Center</option>
+                        <option>Parking Lot</option>
+                        <option>Dormitory</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date Found</label>
+                    <input name="date" type="date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Upload Image</label>
+                    <label class="file-label">
+                        <input name="image" id="foundImageInput" type="file" accept="image/*">Choose file or drag & drop here
+<img id="foundPreview" style="max-width: 200px; margin-top: 10px; display: none;" alt="Preview" />
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success" style="width:100%">Report Found Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIEW REPORTS PAGE -->
+    <div class="page" id="viewReportsPage">
+        <button class="back" onclick="navigateTo('homePage')">Back</button>
+        <div class="search-filters">
+            <div class="search-group"><input type="text" class="search-input" placeholder="Search..." id="searchInput"></div>
+            <div class="search-group"><select class="form-select" id="typeFilter"><option value="">All Types</option><option value="lost">Lost</option><option value="found">Found</option></select></div>
+            <div class="search-group"><select class="form-select" id="categoryFilter"><option value="">All Categories</option><option>Electronics</option><option>Clothing</option><option>Documents</option><option>Accessories</option><option>Books</option><option>Other</option></select></div>
+            <div class="search-group"><select class="form-select" id="dateFilter"><option value="">All Dates</option><option value="today">Today</option><option value="week">This Week</option><option value="month">This Month</option></select></div>
+        </div>
+        <div class="cards-grid" id="cardsContainer"></div>
+    </div>
+</main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const lostForm = document.getElementById('lostForm');
+          const foundForm = document.getElementById('foundForm');
+        
+          async function uploadToImgBB(file) {
+            const formData = new FormData();
+            formData.append("image", file);
+            const res = await fetch("https://api.imgbb.com/1/upload?key=b5e046ba2e9024c29edfb14dfceef25e", {
+              method: "POST",
+              body: formData,
+            });
+            const json = await res.json();
+            return json.data.url;
+          }
+        
+          if (lostForm) {
+            const fileInput = document.getElementById('imageFile');
+        
+            fileInput.addEventListener('change', (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const preview = document.createElement('img');
+                preview.src = URL.createObjectURL(file);
+                preview.style.maxWidth = '200px';
+                preview.style.marginTop = '10px';
+                preview.alt = "Image preview";
+        
+                const existingPreview = lostForm.querySelector('img');
+                if (existingPreview) existingPreview.remove();
+                lostForm.appendChild(preview);
+              }
+            });
+        
+            lostForm.addEventListener('submit', async (e) => {
+              e.preventDefault();
+        
+              const form = e.target;
+              const itemName = form.querySelector('input[name="name"]').value.trim();
+              const category = form.querySelector('select[name="category"]').value;
+              const description = form.querySelector('textarea[name="description"]').value.trim();
+              const location = form.querySelector('select[name="location"]').value;
+              const date = form.querySelector('input[name="dateReported"]').value;
+              const imageFile = fileInput.files[0];
+        
+              if (!itemName || !category || !description || !location || !date || !imageFile) {
+                alert("Please fill in all fields and upload an image.");
+                return;
+              }
+        
+              const statusMessage = document.createElement('p');
+              statusMessage.innerText = "Uploading image...";
+              form.appendChild(statusMessage);
+        
+              let imageUrl;
+              try {
+                imageUrl = await uploadToImgBB(imageFile);
+              } catch (err) {
+                alert("Image upload failed.");
+                console.error(err);
+                statusMessage.remove();
+                return;
+              }
+        
+              statusMessage.innerText = "Submitting lost item report...";
+        
+              const data = {
+                name: itemName,
+                category,
+                description,
+                location,
+                dateReported: date,
+                imageUrl: imageUrl,
+                type: "lost",
+                status: "pending",
+                reportedBy: 1
+              };
+        
+              fetch("http://localhost:8080/api/report-lost", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+              })
+                .then(res => res.json())
+                .then(res => {
+                  alert("Lost item reported successfully!");
+                  form.reset();
+                  const preview = form.querySelector('img');
+                  if (preview) preview.remove();
+                  statusMessage.remove();
+                  navigateTo('homePage');
+                })
+                .catch(err => {
+                  alert("Submission failed.");
+                  console.error(err);
+                  statusMessage.remove();
+                });
+            });
+          }
+        
+          if (foundForm) {
+            const fileInput = document.getElementById('foundImageInput');
+            fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const preview = document.createElement('img');
+    preview.src = URL.createObjectURL(file);
+    preview.style.maxWidth = '200px';
+    preview.style.marginTop = '10px';
+    preview.alt = "Image preview";
+
+    const existingPreview = foundForm.querySelector('img');
+    if (existingPreview) existingPreview.remove();
+    foundForm.appendChild(preview);
+  }
+});
+
+            foundForm.addEventListener('submit', async (e) => {
+              e.preventDefault();
+        
+              const form = e.target;
+              const itemName = form.querySelector('input[name="itemName"]').value.trim();
+              const category = form.querySelector('select[name="category"]').value;
+              const description = form.querySelector('textarea[name="description"]').value.trim();
+              const location = form.querySelector('select[name="location"]').value;
+              const date = form.querySelector('input[name="date"]').value;
+              const imageFile = fileInput.files[0];
+        
+              if (!itemName || !category || !description || !location || !date || !imageFile) {
+                alert("Please fill in all fields and upload an image.");
+                return;
+              }
+        
+              const statusMessage = document.createElement('p');
+              statusMessage.innerText = "Uploading image...";
+              form.appendChild(statusMessage);
+        
+              let imageUrl;
+              try {
+                imageUrl = await uploadToImgBB(imageFile);
+              } catch (err) {
+                alert("Image upload failed.");
+                console.error(err);
+                statusMessage.remove();
+                return;
+              }
+        
+              statusMessage.innerText = "Submitting found item report...";
+        
+              const data = {
+                name: itemName,
+                category,
+                description,
+                location,
+                dateReported: date,
+                imageUrl: imageUrl,
+                type: "found",
+                status: "pending",
+                reportedBy: 1
+              };
+        
+              fetch("http://localhost:8080/api/report-found", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+              })
+                .then(res => res.json())
+                .then(res => {
+                  alert("Found item reported successfully!");
+                  form.reset();
+                  const preview = form.querySelector('img');
+                  if (preview) preview.remove();
+                  statusMessage.remove();
+                  navigateTo('homePage');
+                })
+                .catch(err => {
+                  alert("Submission failed.");
+                  console.error(err);
+                  statusMessage.remove();
+                });
+            });
+          }
+        });
+
+        async function fetchAndRenderReports() {
+  const res = await fetch("http://localhost:8080/api/reports");
+  let items = await res.json();
+
+  // Filter by Type
+  const type = document.getElementById("typeFilter").value;
+  if (type) {
+    items = items.filter(item => item.type.toLowerCase() === type.toLowerCase());
+  }
+
+  // Filter by Category
+  const category = document.getElementById("categoryFilter").value;
+  if (category) {
+    items = items.filter(item => item.category === category);
+  }
+
+  // Filter by Date
+  const dateFilter = document.getElementById("dateFilter").value;
+  const today = new Date();
+  items = items.filter(item => {
+    const reportDate = new Date(item.dateReported);
+    if (dateFilter === "today") {
+      return reportDate.toDateString() === today.toDateString();
+    } else if (dateFilter === "week") {
+      const oneWeekAgo = new Date(today);
+      oneWeekAgo.setDate(today.getDate() - 7);
+      return reportDate >= oneWeekAgo;
+    } else if (dateFilter === "month") {
+      return reportDate.getMonth() === today.getMonth() &&
+             reportDate.getFullYear() === today.getFullYear();
+    }
+    return true; // If no date filter
+  });
+
+  renderCards(items);
+}
+
+function renderCards(items) {
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
+
+  if (items.length === 0) {
+    container.innerHTML = "<p style='text-align:center;width:100%'>No items found.</p>";
+    return;
+  }
+
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-image">
+        <img src="${item.imageUrl}" alt="Item Image" style="height:100%;width:auto;max-width:100%;object-fit:cover;" />
+      </div>
+      <div class="card-content">
+        <span class="card-badge ${item.type.toLowerCase()}">${item.type}</span>
+        <h3 class="card-title">${item.name}</h3>
+        <div class="card-info">
+          <span><strong>Category:</strong> ${item.category}</span>
+          <span><strong>Location:</strong> ${item.location}</span>
+          <span><strong>Date:</strong> ${item.dateReported}</span>
+          <span><strong>Status:</strong> ${item.status}</span>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Re-fetch reports when filters change
+["typeFilter", "categoryFilter", "dateFilter"].forEach(id => {
+  document.getElementById(id).addEventListener("change", fetchAndRenderReports);
+});
+
+// When navigating to viewReportsPage, fetch items
+document.querySelectorAll('.btn-nav').forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (btn.textContent.includes("View Reports")) {
+      fetchAndRenderReports();
+    }
+  });
+});
+        
+        /* ---------- NAVIGATION ---------- */
+        function navigateTo(pageId) {
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          document.querySelector(`[data-page="${pageId}"]`)?.classList.add('active');
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+          document.getElementById(pageId).classList.add('active');
+        }
+        window.navigateTo = navigateTo;
+
+  
+</script>
+</body>
+</html>

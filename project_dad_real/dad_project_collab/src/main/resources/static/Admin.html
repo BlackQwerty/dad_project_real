@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found | Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 60px 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+            transition: transform 0.3s ease;
+        }
+
+        .login-box:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fafbfc;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            padding: 30px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 30px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-title::before {
+            content: "📦";
+            font-size: 24px;
+        }
+
+        .sidebar-menu {
+            padding: 0 20px;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 15px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 15px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #3498db;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .menu-item.active {
+            background: rgba(52, 152, 219, 0.2);
+            color: white;
+            font-weight: 500;
+        }
+
+        .menu-item.active::before {
+            transform: translateX(0);
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .filters {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-matched {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-claimed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .type-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .type-lost {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .type-found {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Match Items Page */
+        .match-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .match-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .match-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .match-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .match-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 15px;
+        }
+
+        .match-select {
+            padding: 14px 18px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .match-select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .match-btn {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .match-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Analytics Page */
+        .analytics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .chart {
+            height: 300px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+
+        .bar {
+            width: 50px;
+            background: linear-gradient(180deg, #3498db, #2980b9);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .pie-chart {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .pie-slice {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            clip: rect(0, 125px, 250px, 0);
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .main-content {
+                margin-left: 200px;
+                padding: 20px;
+            }
+            
+            .analytics-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            
+            .login-box {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+        }
+        .analytics-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .chart-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .chart-card canvas {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .chart-card h3 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <h1 class="login-title">Admin Login</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" class="form-input" id="email" placeholder="admin@lostfound.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" class="form-input" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Lost & Found Admin</h2>
+            </div>
+            <div class="sidebar-menu">
+                <a class="menu-item active" data-page="dashboardPage">📊 Dashboard</a>
+                <a class="menu-item" data-page="allReportsPage">📋 All Reports</a>
+                <a class="menu-item" data-page="matchItemsPage">🔗 Match Items</a>
+                <a class="menu-item" data-page="claimedItemsPage">✅ Claimed Items</a>
+                <a class="menu-item" data-page="analyticsPage">📈 Analytics</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+<!-- Dashboard Page -->
+<div class="page active" id="dashboardPage">
+    <div class="page-header">
+      <h1 class="page-title">Dashboard Overview</h1>
+      <p class="page-subtitle">Welcome back! Here's what's happening with lost and found items.</p>
+    </div>
+  
+    <div class="analytics-container">
+      <div class="chart-container">
+        <h3 class="chart-title">Quick Stats</h3>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+          
+          <div style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 10px;">
+            <div id="totalReports" style="font-size: 36px; font-weight: 700; color: #3498db;">0</div>
+            <div style="color: #6c757d; margin-top: 5px;">Total Reports</div>
+          </div>
+  
+          <div style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 10px;">
+            <div id="matchedItems" style="font-size: 36px; font-weight: 700; color: #28a745;">0</div>
+            <div style="color: #6c757d; margin-top: 5px;">Matched Items</div>
+          </div>
+  
+          <div style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 10px;">
+            <div id="lostItems" style="font-size: 36px; font-weight: 700; color: #dc3545;">0</div>
+            <div style="color: #6c757d; margin-top: 5px;">Lost Items</div>
+          </div>
+  
+          <div style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 10px;">
+            <div id="foundItems" style="font-size: 36px; font-weight: 700; color: #ffc107;">0</div>
+            <div style="color: #6c757d; margin-top: 5px;">Found Items</div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+              
+
+            <!-- All Reports Page -->
+            <div class="page" id="allReportsPage">
+                <div class="page-header">
+                    <h1 class="page-title">All Reports</h1>
+                    <p class="page-subtitle">Manage all lost and found item reports in one place.</p>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label class="filter-label">Type</label>
+                                <select class="filter-select" id="typeFilter">
+                                    <option value="">All Types</option>
+                                    <option value="Lost">Lost</option>
+                                    <option value="Found">Found</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Status</label>
+                                <select class="filter-select" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Matched">Matched</option>
+                                    <option value="Claimed">Claimed</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Category</label>
+                                <select class="filter-select" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Documents">Documents</option>
+                                    <option value="Accessories">Accessories</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Reported By</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Match Items Page -->
+            <div class="page" id="matchItemsPage">
+                <div class="page-header">
+                  <h1 class="page-title">Match Items</h1>
+                  <p class="page-subtitle">Manually select matching lost and found items based on category and location.</p>
+                </div>
+              
+                <form id="matchForm" style="margin-bottom: 20px;">
+                  <label for="lostItemSelect">Lost Item:</label>
+                  <select id="lostItemSelect" required></select>
+              
+                  <label for="foundItemSelect">Found Item:</label>
+                  <select id="foundItemSelect" required></select>
+              
+                  <button type="submit">Match Selected Items</button>
+                </form>
+              
+                <div id="matchSuccess" style="color: green; display: none;">Items matched successfully!</div>
+                <div id="matchError" style="color: red; display: none;">Failed to match items. Please try again.</div>
+              </div>
+              
+            <!-- Claimed Items Page -->
+<div class="page" id="claimedItemsPage">
+    <div class="page-header">
+      <h1 class="page-title">Claimed Items</h1>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Reported By</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="claimedTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+              
+
+            <!-- Analytics Page -->
+            <div class="page" id="analyticsPage">
+                <div class="page-header">
+                  <h1 class="page-title">Analytics Dashboard</h1>
+                  <p class="page-subtitle">Insights and trends from lost and found data.</p>
+                </div>
+              
+                <div class="analytics-section">
+                    <div class="chart-card">
+                      <h3>Lost Items by Category</h3>
+                      <canvas id="categoryChart" width="300" height="250"></canvas>
+                    </div>
+                    <div class="chart-card">
+                      <h3>Common Lost Item Locations</h3>
+                      <canvas id="locationChart" width="300" height="250"></canvas>
+                    </div>
+                    <div class="chart-card">
+                      <h3>Matched vs Unmatched Items</h3>
+                      <canvas id="matchPieChart" width="300" height="250"></canvas>
+                    </div>
+                  </div>
+                  
+              
+
+    <script>
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation (in real app, this would be server-side)
+            if (email && password) {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  fetchReports();          // load table
+  fetchDashboardStats();   // load stats (this was missing)
+}});
+
+        // Fetch all reports and populate the table
+        async function fetchReports() {
+  const response = await fetch("http://localhost:8080/api/reports");
+  const reports = await response.json();
+
+  const tbody = document.getElementById("reportsTableBody");
+  tbody.innerHTML = "";
+
+  reports.forEach(item => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td><span class="type-badge">${item.type}</span></td>
+      <td>${item.category}</td>
+      <td>${item.reportedBy}</td>
+      <td>${item.location}</td>
+      <td><span class="status-badge status-${item.status.toLowerCase()}">${item.status}</span></td>
+      <td>
+        ${
+          item.status.toLowerCase() === "pending"
+            ? `<button onclick="markClaimed(${item.id})" class="btn btn-success">Claim</button>`
+            : `<button class="btn" disabled>Completed</button>`
+        }
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+async function fetchClaimedItems() {
+  const res = await fetch("http://localhost:8080/api/claimed");
+  const items = await res.json();
+
+  const tbody = document.getElementById("claimedTableBody");
+  tbody.innerHTML = ""; // Clear old rows
+
+  items.forEach(item => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>${item.category}</td>
+      <td>${item.location}</td>
+      <td>${item.reportedBy}</td>
+      <td>${item.status}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+        // Navigation functionality
+        document.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', function () {
+    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
+
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    const pageId = this.getAttribute('data-page');
+    document.getElementById(pageId).classList.add('active');
+
+    if (pageId === "matchItemsPage") {
+  populateMatchDropdowns();  // refresh lost/found items
+}
+
+    if (pageId === "allReportsPage") {
+      fetchReports();  // refresh report list
+    }
+
+    if (pageId === "claimedItemsPage") {
+      fetchClaimedItems();
+    }
+    if (pageId === "dashboardPage") {
+      fetchDashboardStats(); //refresh dashboard cards
+    }
+  });
+});
+
+
+
+        // Filter functionality
+        function filterTable() {
+            const typeFilter = document.getElementById('typeFilter').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
+            
+            const rows = document.querySelectorAll('#reportsTableBody tr');
+            
+            rows.forEach(row => {
+                const type = row.cells[2].textContent.toLowerCase();
+                const status = row.cells[6].textContent.toLowerCase();
+                const category = row.cells[3].textContent.toLowerCase();
+                
+                const typeMatch = !typeFilter || type.includes(typeFilter);
+                const statusMatch = !statusFilter || status.includes(statusFilter);
+                const categoryMatch = !categoryFilter || category.includes(categoryFilter);
+                
+                if (typeMatch && statusMatch && categoryMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Add event listeners to filters
+        document.getElementById('typeFilter').addEventListener('change', filterTable);
+        document.getElementById('statusFilter').addEventListener('change', filterTable);
+        document.getElementById('categoryFilter').addEventListener('change', filterTable);
+
+        // Action functions
+        function matchItem(id) {
+  document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+  document.querySelector('[data-page="matchItemsPage"]').classList.add('active');
+  document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+  document.getElementById('matchItemsPage').classList.add('active');
+
+  const rows = document.querySelectorAll("#reportsTableBody tr");
+  rows.forEach(row => {
+    if (row.cells[0].textContent == id) {
+      const itemType = row.cells[2].textContent.trim();
+      if (itemType === 'Lost') {
+        document.getElementById('lostItemSelect').value = id;
+      } else if (itemType === 'Found') {
+        document.getElementById('foundItemSelect').value = id;
+      }
+    }
+  });
+}
+
+
+
+
+
+async function markClaimed(id) {
+  if (!confirm("Mark this item as claimed?")) return;
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/claim/${id}`, {
+      method: "PUT"
+    });
+
+    if (response.ok) {
+      showNotification("Item marked as claimed!", "success");
+
+      await fetchReports();         // ✅ refresh report list
+      await fetchClaimedItems();    // ✅ refresh claimed items page
+      await fetchDashboardStats();  // ✅ refresh dashboard
+    } else {
+      showNotification("Failed to mark item as claimed.", "error");
+    }
+  } catch (error) {
+    showNotification("Error updating item status.", "error");
+  }
+}
+
+
+
+
+        // Notification function
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 500;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #dc3545, #e74c3c)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+  async function fetchDashboardStats() {
+  try {
+    const res = await fetch("http://localhost:8080/api/summary");
+    if (res.ok) {
+      const stats = await res.json();
+
+     document.getElementById("totalReports").textContent = stats.totalReports;
+     document.getElementById("matchedItems").textContent = stats.matchedItems;
+     document.getElementById("lostItems").textContent = stats.lostItems;
+     document.getElementById("foundItems").textContent = stats.foundItems;
+
+    } else {
+      console.error("Failed to fetch dashboard stats");
+    }
+    
+  } catch (err) {
+    console.error("Error fetching dashboard stats:", err);
+  }
+}
+async function findMatches() {
+  const response = await fetch("http://localhost:8080/api/match-items", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}) // empty object because no request data needed
+  });
+
+  const data = await response.json();
+
+  const table = document.getElementById("matchTableBody");
+  table.innerHTML = "";
+
+  if (data.length === 0) {
+    table.innerHTML = `<tr><td colspan="6" style="text-align:center;">No matches found</td></tr>`;
+    return;
+  }
+
+  data.forEach(item => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>${item.type}</td>
+      <td>${item.category}</td>
+      <td>${item.location}</td>
+      <td>${item.status}</td>
+    `;
+    table.appendChild(row);
+  });
+}
+
+
+async function populateMatchDropdowns() {
+  const response = await fetch("http://localhost:8080/api/items");
+  const items = await response.json();
+
+  const lostSelect = document.getElementById("lostItemSelect");
+  const foundSelect = document.getElementById("foundItemSelect");
+
+  lostSelect.innerHTML = '<option value="">-- Select Lost Item --</option>';
+  foundSelect.innerHTML = '<option value="">-- Select Found Item --</option>';
+
+  items.forEach(item => {
+    if (item.type.toLowerCase() === "lost" && item.status.toLowerCase() === "pending") {
+      const option = document.createElement("option");
+      option.value = item.id;
+      option.textContent = `[${item.id}] ${item.name} (${item.category}, ${item.location})`;
+      lostSelect.appendChild(option);
+    }
+
+    if (item.type.toLowerCase() === "found" && item.status.toLowerCase() === "pending") {
+      const option = document.createElement("option");
+      option.value = item.id;
+      option.textContent = `[${item.id}] ${item.name} (${item.category}, ${item.location})`;
+      foundSelect.appendChild(option);
+    }
+  });
+}
+
+document.getElementById("matchForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const lostId = document.getElementById("lostItemSelect").value;
+  const foundId = document.getElementById("foundItemSelect").value;
+
+  if (!lostId || !foundId) {
+    alert("Please select both lost and found items.");
+    return;
+  }
+
+  const response = await fetch("http://localhost:8080/api/match", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ lostId: parseInt(lostId), foundId: parseInt(foundId) })
+  });
+
+  if (response.ok) {
+    document.getElementById("matchSuccess").style.display = "block";
+    document.getElementById("matchError").style.display = "none";
+    await populateMatchDropdowns(); // refresh dropdowns
+    fetchReports(); // refresh reports table
+    fetchDashboardStats(); // refresh dashboard
+  } else {
+    document.getElementById("matchSuccess").style.display = "none";
+    document.getElementById("matchError").style.display = "block";
+  }
+});
+
+async function loadAnalyticsCharts() {
+    const catRes = await fetch("http://localhost:8080/api/analytics/lost-by-category");
+    const catData = await catRes.json();
+    const catLabels = Object.keys(catData);
+    const catValues = Object.values(catData);
+
+    new Chart(document.getElementById("categoryChart"), {
+      type: "bar",
+      data: {
+        labels: catLabels,
+        datasets: [{
+          label: "Lost Items",
+          data: catValues,
+          backgroundColor: "#3498db"
+        }]
+      }
+    });
+
+    const locRes = await fetch("http://localhost:8080/api/analytics/lost-by-location");
+    const locData = await locRes.json();
+    const locLabels = Object.keys(locData);
+    const locValues = Object.values(locData);
+
+    new Chart(document.getElementById("locationChart"), {
+      type: "bar",
+      data: {
+        labels: locLabels,
+        datasets: [{
+          label: "Lost Items",
+          data: locValues,
+          backgroundColor: "#2ecc71"
+        }]
+      }
+    });
+
+    const matchRes = await fetch("http://localhost:8080/api/analytics/matched-vs-unmatched");
+    const matchData = await matchRes.json();
+    const pieLabels = Object.keys(matchData);
+    const pieValues = Object.values(matchData);
+
+    new Chart(document.getElementById("matchPieChart"), {
+      type: "pie",
+      data: {
+        labels: pieLabels,
+        datasets: [{
+          data: pieValues,
+          backgroundColor: ["#28a745", "#e74c3c"]
+        }]
+      }
+    });
+  }
+
+  // Make sure charts are loaded when analytics menu is clicked
+  document.querySelectorAll(".menu-item").forEach(item => {
+    item.addEventListener("click", function () {
+      const pageId = this.getAttribute("data-page");
+      if (pageId === "analyticsPage") {
+        loadAnalyticsCharts();
+      }
+      if (pageId === "claimedItemsPage") {
+      fetchClaimedItems(); // ✅ refresh list when navigating to this tab
+    }
+      if (pageId === "allReportsPage") {
+        fetchReports(); // ✅ refresh report list when navigating to this tab
+      }
+      if (pageId === "dashboardPage") {
+        fetchDashboardStats(); // ✅ refresh dashboard stats when navigating to this tab
+      }
+    });
+  });
+        // Add CSS for notification animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+  // ... (all your other functions: showNotification, matchItem, filterTable, fetchReports, fetchDashboardStats etc.)
+
+
+  // This line should be LAST in the <script>
+    window.addEventListener("DOMContentLoaded", () => {
+  fetchDashboardStats();
+  fetchReports();
+  fetchClaimedItems();  // optional, for preload
+});
+
+
+</script>
+
+</body>
+</html>
