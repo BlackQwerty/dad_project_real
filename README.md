@@ -1,44 +1,32 @@
-# dad_project_real
-Lost-And-Found-University-System
-Lost And Found University System for students and staff to track and report the lost and found items in university area.
+# 🧭 Lost & Found Management System (University Project)
 
-🧭 Lost & Found Item Management System (University Project)
-This is a full-stack web application for reporting, managing, and tracking lost and found items in a university environment.
+A full-stack distributed web application for reporting and managing lost and found items in a university setting. Built using **Spring Boot**, **MySQL**, and **Vanilla JavaScript + HTML**, it offers both public-facing and admin-facing interfaces with real-time analytics, secure login, and image handling via ImgBB API.
 
-🔍 Features
-📦 Report lost or found items with images
-🧠 Admin dashboard for managing reports
-🔗 Match lost and found items manually
-✅ Claim items and update status
-📊 Analytics with pie and bar charts (Matched vs Unmatched, Category, Location)
-🔐 JWT authentication for secure login
-🎨 Responsive HTML + JavaScript frontend
-🚀 Tech Stack
-Frontend: HTML, CSS, JavaScript (Vanilla)
-Backend: Spring Boot (Java)
-Database: MySQL
-Image Hosting: ImgBB API
-Authentication: JWT (JSON Web Tokens)
-📂 Project Structure
-├── backend/ │ └── src/main/java/com/utm/lostfound/ │ ├── controller/ │ ├── model/ │ ├── repository/ │ └── config/ ├── frontend/ │ ├── Admin.html │ └── LostFound.html └── README.md
+---
 
-yaml Copy Edit
+## 📌 Project Overview
 
-🛠️ Setup Instructions
-1. Clone the repo
-git clone https://github.com/your-username/lost-found-project.git
-cd lost-found-project
-2. Backend Setup (Spring Boot)
-Open in Eclipse to work on backend and frontend VS Code
+Students and staff often lose or find personal belongings on campus. This project provides a structured system to report, match, claim, and monitor lost and found items with transparency and efficiency.
 
-Configure application.properties with your MySQL DB
+---
 
-Run the backend server
+## 💼 Commercial Value / Third-Party Integration
 
-3. Frontend
-Open login.html (for login before get access to Admin.html or LostFound.html)
-LostFound.html (for Lost and Found report submission)
-Admin.html (for Admin Dashboard)
+In real-world campuses, this system reduces administrative workload and increases the return rate of lost items.  
 
+### 🔗 Integrated Third-Party Services:
+- **ImgBB API** – Used to host uploaded item images.
+- **JWT (JSON Web Tokens)** – Provides secure login and user role access control.
 
-Ensure backend runs at http://localhost:8080
+---
+
+## 🏗️ System Architecture
+
+### High-Level Diagram
+
+```mermaid
+graph TD
+    A[LostFound.html (Public User)] -->|HTTP| C[Spring Boot Backend]
+    B[Admin.html (Admin Panel)] -->|HTTP| C
+    C --> D[(MySQL Database)]
+    C --> E[ImgBB API]
