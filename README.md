@@ -6,17 +6,17 @@
 > • Muhammad Ammarul Arrif Bin Mohd Arrifin - B032310874  
 > • Muhammad Fikri Bin Abdullah - B032310813
 
- 📌 Project Overview
+ ### 📌 Project Overview
 
 The Lost & Found Management System is a full-stack distributed web application designed for reporting and managing lost and found items within university environments. Built using Spring Boot , MySQL , and Vanilla JavaScript + HTML , this system provides both public-facing and admin-facing interfaces with real-time analytics, secure login mechanisms, and image handling via ImgBB API integration.
 
 Students and staff often lose or find personal belongings on campus, and this project addresses this common challenge by providing a structured digital platform for seamless reporting, intelligent matching, efficient claiming processes, and comprehensive monitoring of lost and found items. The system serves as a centralized hub that connects individuals who have lost items with those who have found them, significantly improving recovery rates while reducing administrative burden on university staff.
 
 
-💼 Commercial Value & Third-Party Integration
+### 💼 Commercial Value & Third-Party Integration
+
 In real-world campus environments, this system significantly reduces administrative workload for staff members who traditionally handle lost and found operations manually, while simultaneously increasing the return rate of lost items through its efficient matching algorithms and user-friendly interface.
 
-🔗 Integrated Third-Party Services:
 ### 🔗 Integrated Third-Party Services
 
 **ImgBB API**
