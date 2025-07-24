@@ -1,3 +1,13 @@
+## **Team Members**
+
+> **Team Members:**
+> 
+> • Ahmad Shukri Bin Bakri - B032310856  
+> • Che Khuaimanfikri Bin Che Om - B032310698  
+> • Muhammad Haziq Bin Norizan - B032310357  
+> • Muhammad Ammarul Arrif Bin Mohd Arrifin - B032310874  
+> • Muhammad Fikri Bin Abdullah - B032310813
+
  🧭 Lost & Found Management System (University Project)
 
 A full-stack distributed web application for reporting and managing lost and found items in a university setting. Built using **Spring Boot**, **MySQL**, and **Vanilla JavaScript + HTML**, it offers both public-facing and admin-facing interfaces with real-time analytics, secure login, and image handling via ImgBB API.
