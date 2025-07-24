@@ -272,19 +272,18 @@ graph TD
     D -- "26. Aggregate Data" --> E
     E --> H
 
-    style A fill:#cde4ff,stroke:#6495ED,stroke-width:2px
-    style B fill:#cde4ff,stroke:#6495ED,stroke-width:2px
-    style C fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
-    style D fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
-    style E fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
-    style F fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
-    style G fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
-    style H fill:#beffbe,stroke:#32CD32,stroke-width:2px
-    style I fill:#beffbe,stroke:#32CD32,stroke-width:2px
-    classDef frontend fill:#cde4ff,stroke:#6495ED;
-    classDef backend fill:#ffd8b1,stroke:#ffa500;
-    classDef data fill:#beffbe,stroke:#32CD32;
-    classDef external fill:#beffbe,stroke:#32CD32;
+    %% Grayscale Colors with Black Text
+    %% Light Gray: #f0f0f0, Medium Gray: #cccccc, Dark Gray: #666666, Black: #000000
+    style A fill:#f0f0f0,stroke:#666666,stroke-width:2px,color:#000000
+    style B fill:#f0f0f0,stroke:#666666,stroke-width:2px,color:#000000
+    style C fill:#e0e0e0,stroke:#666666,stroke-width:2px,color:#000000
+    style D fill:#e0e0e0,stroke:#666666,stroke-width:2px,color:#000000
+    style E fill:#e0e0e0,stroke:#666666,stroke-width:2px,color:#000000
+    style F fill:#e0e0e0,stroke:#666666,stroke-width:2px,color:#000000
+    style G fill:#e0e0e0,stroke:#666666,stroke-width:2px,color:#000000
+    style H fill:#d0d0d0,stroke:#000000,stroke-width:2px,color:#000000
+    style I fill:#d0d0d0,stroke:#000000,stroke-width:2px,color:#000000
+
 ```
 
 ### 🔁 Use Case Flows
