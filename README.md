@@ -29,13 +29,34 @@ In real-world campus environments, this system significantly reduces administrat
 
 These third-party integrations enhance the system's scalability, security, and user experience while maintaining cost-effectiveness for educational institutions looking to implement modern lost and found management solutions.
 
- 🏗️ System Architecture
+## 🏗️ System Architecture
+
+The Lost & Found Management System follows a client-server architecture with distributed components that work together to provide a seamless user experience.
+
+### 📊 Architecture Diagram
 
 graph TD
     A[LostFound.html (Public User)] -->|HTTP| C[Spring Boot Backend]
     B[Admin.html (Admin Panel)] -->|HTTP| C
     C --> D[(MySQL Database)]
     C --> E[ImgBB API]
+
+
+### 🏗️ System Components
+
+**Frontend Layer:**
+- **Public Interface (LostFound.html):** Allows any university user to submit lost/found item reports and view existing reports
+- **Admin Panel (Admin.html):** Provides administrative functions including item matching, claim management, and analytics dashboard
+
+**Backend Layer:**
+- **Spring Boot Application:** RESTful API server handling all business logic, authentication, and data processing
+- **JWT Security:** Manages user authentication and authorization for protected endpoints
+
+**Data Layer:**
+- **MySQL Database:** Persistent storage for user accounts, item reports, and system data
+- **ImgBB API:** External service for hosting and managing uploaded item images
+
+**Communication:** All components communicate via HTTP/HTTPS protocols, with secure JWT-based authentication for protected admin functions.
 
 🖥️ Backend Application
 🧪 Technology Stack
