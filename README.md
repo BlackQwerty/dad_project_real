@@ -285,6 +285,7 @@ graph TD
     classDef backend fill:#ffd8b1,stroke:#ffa500;
     classDef data fill:#beffbe,stroke:#32CD32;
     classDef external fill:#beffbe,stroke:#32CD32;
+```
 
 ### 🔁 Use Case Flows
 
