@@ -82,33 +82,6 @@ graph TD
 | `/api/stats/location` | GET | Lost items by location |
 | `/api/stats/match-status` | GET | Matched vs unmatched stats |
 
-#### 📥 Request Example
-```json
-POST /api/report-lost
-Content-Type: application/json
-
-{
-  "name": "Blue Wallet",
-  "category": "Accessories",
-  "description": "Left in cafeteria",
-  "location": "Cafeteria",
-  "dateReported": "2025-07-20",
-  "imageUrl": "https://i.ibb.co/example.jpg  ",
-  "type": "lost",
-  "status": "pending",
-  "reportedBy": 1
-}
-
-📤 Response (Success)
-json
-Copy
-Edit
-{
-  "id": 12,
-  "status": "pending",
-  "type": "lost"
-}
-
 ## 🔐 Security
 
 The Lost & Found Management System implements robust security measures to protect sensitive operations and ensure data integrity. All administrative endpoints including `/api/match`, `/api/claim/{id}`, and `/api/reports` are protected using JWT (JSON Web Tokens) Authentication.
@@ -193,4 +166,29 @@ JSON validation using @Valid
 
 Prevent duplicate matching and invalid claims
 
+#### 📥 Request Example
+```json
+POST /api/report-lost
+Content-Type: application/json
 
+{
+  "name": "Blue Wallet",
+  "category": "Accessories",
+  "description": "Left in cafeteria",
+  "location": "Cafeteria",
+  "dateReported": "2025-07-20",
+  "imageUrl": "https://i.ibb.co/example.jpg  ",
+  "type": "lost",
+  "status": "pending",
+  "reportedBy": 1
+}
+
+📤 Response (Success)
+json
+Copy
+Edit
+{
+  "id": 12,
+  "status": "pending",
+  "type": "lost"
+}
