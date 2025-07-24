@@ -109,45 +109,34 @@ Edit
   "type": "lost"
 }
 
-🔐 Security
-All sensitive endpoints (/api/match, /api/claim, /api/reports) are protected using JWT Authentication.
+## 🔐 Security
 
-JWT is included in the Authorization header using the Bearer schema.
+The Lost & Found Management System implements robust security measures to protect sensitive operations and ensure data integrity. All administrative endpoints including `/api/match`, `/api/claim/{id}`, and `/api/reports` are protected using JWT (JSON Web Tokens) Authentication.
 
-http
-Copy
-Edit
-Authorization: Bearer <your-token>
-This ensures only authorized admins can perform matches, claims, and view statistics.
+### Authentication Flow
+1. **User Login:** Administrators authenticate via `/api/auth/login` endpoint
+2. **Token Generation:** System generates and returns a JWT upon successful authentication
+3. **Token Usage:** Client includes the JWT in the Authorization header using the Bearer schema for all subsequent requests
+4. **Token Validation:** Backend validates the JWT before processing sensitive operations
 
-💻 Frontend Applications
-🎯 1. LostFound.html (Public User Interface)
-Purpose: Allows any university user to submit and view reports.
+## 💻 Frontend Applications
 
-Stack: HTML, CSS, Vanilla JavaScript
+### 🎯 1. LostFound.html (Public User Interface)
+- **Purpose:** Allows any university user to submit and view reports
+- **Stack:** HTML, CSS, Vanilla JavaScript
+- **API Integration:** Uses fetch() to call endpoints:
+  - `/api/report-lost`
+  - `/api/report-found`
+  - `/api/reports` (GET with filters)
 
-API Integration: Uses fetch() to call endpoints like:
-
-/api/report-lost
-
-/api/report-found
-
-/api/reports (GET with filters)
-
-🛠️ 2. Admin.html (Admin Panel)
-Purpose: Allows admin to view reports, manually match items, claim items, and view analytics.
-
-Stack: HTML, CSS, Vanilla JavaScript, Chart.js
-
-API Integration: Authenticated fetch with JWT to endpoints like:
-
-/api/reports
-
-/api/claim/{id}
-
-/api/match
-
-/api/stats/*
+### 🛠️ 2. Admin.html (Admin Panel)
+- **Purpose:** Allows admin to view reports, manually match items, claim items, and view analytics
+- **Stack:** HTML, CSS, Vanilla JavaScript, Chart.js
+- **API Integration:** Authenticated fetch with JWT to endpoints:
+  - `/api/reports`
+  - `/api/claim/{id}`
+  - `/api/match`
+  - `/api/stats/*`
 
 🗃️ Database Design
 🧩 Entity-Relationship Diagram (ERD)
