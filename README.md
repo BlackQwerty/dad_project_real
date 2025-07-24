@@ -178,7 +178,7 @@ The system consists of two main entities: `USER` and `ITEM`. The relationship be
 | Column Name | Data Type | Constraints |
 |-------------|-----------|-------------|
 | id          | int       | PK          |
-| username    | string    | UK          |
+| username    | string    | FK          |
 | password    | string    |             |
 | role        | string    |             |
 | email       | string    |             |
@@ -186,7 +186,7 @@ The system consists of two main entities: `USER` and `ITEM`. The relationship be
 #### **ITEM Table**
 | Column Name   | Data Type | Constraints |
 |---------------|-----------|-------------|
-| id            | bigint    | PK          |
+| id            | int       | PK          |
 | name          | string    |             |
 | category      | string    |             |
 | description   | string    |             |
@@ -203,30 +203,63 @@ The system consists of two main entities: `USER` and `ITEM`. The relationship be
 
 This database design ensures data integrity, scalability, and efficient querying for both user management and item reporting functionalities.
 
-🔄 Business Logic & Validation
-🔁 Use Case Flows
-Report Lost/Found → Fill form → Upload image to ImgBB → Submit JSON to backend → Store in DB
+## 🔄 Business Logic & Validation
 
-Admin Login → Fetch JWT → Access reports & analytics
+This section details the core operational rules and data integrity measures of the Lost & Found Management System.
 
-Match Items → Select two items (lost + found) → POST to /api/match
+### 🔁 Use Case Flows
 
-Claim Item → PUT /api/claim/{id} → Mark as claimed
+1.  **Report Lost/Found Item:**
+    *   User fills the form on `LostFound.html`.
+    *   Image is uploaded to ImgBB API.
+    *   Form data (including ImgBB URL) is submitted as JSON to the backend (`/api/report-lost` or `/api/report-found`).
+    *   Backend validates data and stores the report in the `ITEM` table.
 
-✅ Data Validation
-Frontend:
+    <!-- INSERT SEQUENCE DIAGRAM HERE (Report Flow) -->
 
-Required fields (no blank item names, category, date, etc.)
+2.  **Admin Login & Access:**
+    *   Admin submits credentials on `Admin.html`.
+    *   Credentials are sent to `/api/auth/login`.
+    *   On success, backend generates and returns a JWT.
+    *   Frontend stores JWT and uses it in the `Authorization` header for subsequent requests to protected endpoints (`/api/reports`, `/api/match`, `/api/claim/{id}`, `/api/stats/*`).
 
-File upload presence
+    <!-- INSERT SEQUENCE DIAGRAM HERE (Login & Access Flow) -->
 
-Backend:
+3.  **Match Items:**
+    *   Admin views reports in `Admin.html`.
+    *   Admin selects one "lost" item and one "found" item.
+    *   Admin triggers the match action.
+    *   Frontend sends a `POST` request to `/api/match` with IDs of the selected items.
+    *   Backend validates the request (e.g., items exist, types are different, statuses allow matching).
+    *   If valid, backend updates both items' `status` to "matched" and links them (e.g., using `matchedWith`).
 
-JSON validation using @Valid
+4.  **Claim Item:**
+    *   Admin identifies a matched item that has been physically claimed by its owner.
+    *   Admin triggers the claim action for that item in `Admin.html`.
+    *   Frontend sends a `PUT` request to `/api/claim/{id}`.
+    *   Backend validates the request (e.g., item exists, status is "matched").
+    *   If valid, backend updates the item's `status` to "claimed".
 
-@NotNull and format checks (e.g., valid date)
+### ✅ Data Validation
 
-Prevent duplicate matching and invalid claims
+Ensuring data accuracy and preventing invalid operations is crucial.
+
+1.  **Frontend Validation (`LostFound.html`, `Admin.html`):**
+    *   **Required Fields:** JavaScript checks prevent submission if essential fields (name, category, description, location, date) are empty.
+    *   **File Upload:** Ensures an image is selected before submitting a report.
+    *   **Basic Format Checks:** Simple checks for date format or valid characters before sending data.
+
+2.  **Backend Validation (Spring Boot):**
+    *   **Request Body Validation:** Uses `@Valid` with annotations (`@NotNull`, `@NotBlank`, `@Size`, etc.) on DTOs/Entities for endpoints like `/api/report-*`.
+    *   **Data Integrity Checks:** Ensures dates are valid, strings are within limits.
+    *   **Business Rule Enforcement:**
+        *   Prevents matching items of the same type (e.g., lost with lost).
+        *   Prevents matching items already matched or claimed.
+        *   Prevents claiming items not marked as matched.
+        *   Validates foreign key relationships (e.g., `reportedBy` user exists).
+    *   **Security Validation:** JWT validation secures admin endpoints.
+
+    <!-- INSERT IMAGE/GRAPH HERE (Validation Layers Diagram - e.g., Frontend vs Backend) -->
 
 #### 📥 Request Example
 ```json
