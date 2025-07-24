@@ -58,35 +58,32 @@ graph TD
 
 **Communication:** All components communicate via HTTP/HTTPS protocols, with secure JWT-based authentication for protected admin functions.
 
-🖥️ Backend Application
-🧪 Technology Stack
-Language: Java 17
+## 🖥️ Backend Application
 
-Framework: Spring Boot 3.4.7
+### 🧪 Technology Stack
+- **Language:** Java 17
+- **Framework:** Spring Boot 3.4.7
+- **Database:** MySQL
+- **Security:** JWT (JSON Web Tokens)
+- **Libraries:** Spring Security, Spring Data JPA, Lombok, Jackson
 
-Database: MySQL
+### 📡 API Documentation
 
-Security: JWT
+#### ✅ Main Endpoints
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/report-lost` | POST | Submit lost item |
+| `/api/report-found` | POST | Submit found item |
+| `/api/reports` | GET | Retrieve all reports |
+| `/api/match` | POST | Match lost & found items |
+| `/api/claim/{id}` | PUT | Mark item as claimed |
+| `/api/auth/login` | POST | Authenticate and receive JWT |
+| `/api/stats/category` | GET | Lost items by category |
+| `/api/stats/location` | GET | Lost items by location |
+| `/api/stats/match-status` | GET | Matched vs unmatched stats |
 
-Libraries: Spring Security, Spring Data JPA, Lombok, Jackson
-
-📡 API Documentation
-✅ Main Endpoints
-Endpoint	Method	Description
-/api/report-lost	POST	Submit lost item
-/api/report-found	POST	Submit found item
-/api/reports	GET	Retrieve all reports
-/api/match	POST	Match lost & found items
-/api/claim/{id}	PUT	Mark item as claimed
-/api/auth/login	POST	Authenticate and receive JWT
-/api/stats/category	GET	Lost items by category
-/api/stats/location	GET	Lost items by location
-/api/stats/match-status	GET	Matched vs unmatched stats
-
-📥 Request Example
-json
-Copy
-Edit
+#### 📥 Request Example
+```json
 POST /api/report-lost
 Content-Type: application/json
 
@@ -96,11 +93,12 @@ Content-Type: application/json
   "description": "Left in cafeteria",
   "location": "Cafeteria",
   "dateReported": "2025-07-20",
-  "imageUrl": "https://i.ibb.co/example.jpg",
+  "imageUrl": "https://i.ibb.co/example.jpg  ",
   "type": "lost",
   "status": "pending",
   "reportedBy": 1
 }
+
 📤 Response (Success)
 json
 Copy
@@ -110,6 +108,7 @@ Edit
   "status": "pending",
   "type": "lost"
 }
+
 🔐 Security
 All sensitive endpoints (/api/match, /api/claim, /api/reports) are protected using JWT Authentication.
 
