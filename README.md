@@ -111,8 +111,12 @@ The Lost & Found Management System implements robust security measures to protec
   - `/api/match`
   - `/api/stats/*`
 
-🗃️ Database Design
-🧩 Entity-Relationship Diagram (ERD)
+### 🗃️ Database Design
+
+The Lost & Found Management System uses a relational database design to store user information, item reports, and related data. Below is an overview of the database schema, including entity-relationship diagrams and table structures.
+
+### 📊 Entity-Relationship Diagram (ERD)
+
 mermaid
 Copy
 Edit
@@ -136,10 +140,68 @@ erDiagram
         String password
         String role
     }
-💬 Schema Justification
-User stores login credentials and role (admin/user).
 
-Report table contains all item reports (both lost/found), with a foreign key matchedWith for linking matched items.
+The system consists of two main entities: `USER` and `ITEM`. The relationship between these entities is defined as follows:
+
+- **USER**:
+  - Each user can report multiple items.
+  - Users have roles such as "admin" or "public" to manage access permissions.
+
+- **ITEM**:
+  - Each item is reported by a specific user (`reported_by` foreign key).
+  - Items include details like name, category, description, location, date reported, image URL, type (lost/found), and status.
+
+### 📝 Schema Justification
+
+#### **USER Table**
+- **id**: Primary Key (PK) - Unique identifier for each user.
+- **username**: Unique Key (UK) - Ensures usernames are unique for login purposes.
+- **password**: Stores hashed passwords for secure authentication.
+- **role**: Defines user roles (e.g., admin, public) to control access levels.
+- **email**: Optional field for user contact information.
+
+#### **ITEM Table**
+- **id**: Primary Key (PK) - Unique identifier for each item report.
+- **name**: Name of the lost or found item.
+- **category**: Category of the item (e.g., accessories, electronics).
+- **description**: Detailed description of the item.
+- **location**: Location where the item was found or lost.
+- **date_reported**: Timestamp indicating when the item was reported.
+- **image_url**: URL of the uploaded image hosted on ImgBB API.
+- **type**: Indicates whether the item is "lost" or "found".
+- **status**: Current status of the item (e.g., pending, matched, claimed).
+- **reported_by**: Foreign Key (FK) linking to the `USER` table, indicating which user reported the item.
+
+### 📜 Table Structures
+
+#### **USER Table**
+| Column Name | Data Type | Constraints |
+|-------------|-----------|-------------|
+| id          | int       | PK          |
+| username    | string    | UK          |
+| password    | string    |             |
+| role        | string    |             |
+| email       | string    |             |
+
+#### **ITEM Table**
+| Column Name   | Data Type | Constraints |
+|---------------|-----------|-------------|
+| id            | bigint    | PK          |
+| name          | string    |             |
+| category      | string    |             |
+| description   | string    |             |
+| location      | string    |             |
+| date_reported | string    |             |
+| image_url     | string    |             |
+| type          | string    |             |
+| status        | string    |             |
+| reported_by   | int       | FK          |
+
+### 🔗 Relationships
+- **One-to-Many Relationship:** A single user (`USER`) can report multiple items (`ITEM`).
+- **Foreign Key:** The `reported_by` column in the `ITEM` table references the `id` column in the `USER` table.
+
+This database design ensures data integrity, scalability, and efficient querying for both user management and item reporting functionalities.
 
 🔄 Business Logic & Validation
 🔁 Use Case Flows
