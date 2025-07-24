@@ -36,21 +36,6 @@ These third-party integrations enhance the system's scalability, security, and u
 The Lost & Found Management System follows a client-server architecture with distributed components that work together to provide a seamless user experience.
 
 ### 📊 Architecture Diagram
-
-```mermaid
-graph TD
-    A[LostFound.html (Public User)] -->|HTTP| C[Spring Boot Backend]
-    B[Admin.html (Admin Panel)] -->|HTTP| C
-    C --> D[(MySQL Database)]
-    C --> E[ImgBB API]
-
-    style A fill:#f0f0f0,stroke:#666666,stroke-width:2px,color:#000000
-    style B fill:#f0f0f0,stroke:#666666,stroke-width:2px,color:#000000
-    style C fill:#e0e0e0,stroke:#666666,stroke-width:2px,color:#000000
-    style D fill:#d0d0d0,stroke:#000000,stroke-width:2px,color:#000000
-    style E fill:#d0d0d0,stroke:#000000,stroke-width:2px,color:#000000
-```
-
 ### 🏗️ System Components
 
 **Frontend Layer:**
