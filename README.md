@@ -207,6 +207,85 @@ This database design ensures data integrity, scalability, and efficient querying
 
 This section details the core operational rules and data integrity measures of the Lost & Found Management System.
 
+### 🔄 Business Logic Flows
+
+#### 1. General Workflow Diagram
+
+This diagram shows the high-level interactions between users, the system components, and external services.
+
+<!-- INSERT GENERAL WORKFLOW DIAGRAM HERE -->
+
+```mermaid
+graph TD
+    subgraph "Frontend"
+        A[Public User - LostFound.html]
+        B[Admin User - Admin.html]
+    end
+
+    subgraph "Backend - Spring Boot"
+        C[REST Controllers]
+        D[Services - Business Logic]
+        E[Repositories - DB Access]
+        F[JWT Auth]
+        G[ImgBB Client]
+    end
+
+    subgraph "External Services"
+        H[(MySQL Database)]
+        I[ImgBB API]
+    end
+
+    A -- "1. Report Lost/Found (Form Data)" --> C
+    C -- "2. Validate & Process" --> D
+    D -- "3. Upload Image" --> G
+    G -- "4. Get Image URL" --> I
+    G -- "5. Save Report (with URL)" --> E
+    E <--> H
+
+    B -- "6. Login Request" --> C
+    C -- "7. Authenticate" --> F
+    F -- "8. Generate JWT" --> B
+
+    B -- "9. Fetch Reports (with JWT)" --> C
+    C -- "10. Authorize (Check JWT)" --> F
+    F -- "11. Authorized" --> D
+    D -- "12. Retrieve Data" --> E
+    E --> H
+
+    B -- "13. Match Items (IDs, JWT)" --> C
+    C -- "14. Authorize" --> F
+    F -- "15. Authorized" --> D
+    D -- "16. Validate Match Logic" --> D
+    D -- "17. Update Items (Status, Link)" --> E
+    E <--> H
+
+    B -- "18. Claim Item (ID, JWT)" --> C
+    C -- "19. Authorize" --> F
+    F -- "20. Authorized" --> D
+    D -- "21. Validate Claim Logic" --> D
+    D -- "22. Update Item Status" --> E
+    E <--> H
+
+    B -- "23. Fetch Stats (JWT)" --> C
+    C -- "24. Authorize" --> F
+    F -- "25. Authorized" --> D
+    D -- "26. Aggregate Data" --> E
+    E --> H
+
+    style A fill:#cde4ff,stroke:#6495ED,stroke-width:2px
+    style B fill:#cde4ff,stroke:#6495ED,stroke-width:2px
+    style C fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
+    style D fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
+    style E fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
+    style F fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
+    style G fill:#ffd8b1,stroke:#ffa500,stroke-width:2px
+    style H fill:#beffbe,stroke:#32CD32,stroke-width:2px
+    style I fill:#beffbe,stroke:#32CD32,stroke-width:2px
+    classDef frontend fill:#cde4ff,stroke:#6495ED;
+    classDef backend fill:#ffd8b1,stroke:#ffa500;
+    classDef data fill:#beffbe,stroke:#32CD32;
+    classDef external fill:#beffbe,stroke:#32CD32;
+
 ### 🔁 Use Case Flows
 
 1.  **Report Lost/Found Item:**
