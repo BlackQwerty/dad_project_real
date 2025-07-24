@@ -119,7 +119,7 @@ The Lost & Found Management System uses a relational database design to store us
 
 ### 📊 Entity-Relationship Diagram (ERD)
 
-mermaid
+<!-- mermaid
 Copy
 Edit
 erDiagram
@@ -142,7 +142,8 @@ erDiagram
         String password
         String role
     }
-
+ -->
+ 
 ```mermaid
 erDiagram
     USER ||--o{ ITEM : "reports"
