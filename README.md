@@ -1,10 +1,12 @@
-## **Team Members**
+### **Team Members**
 
-> • Ahmad Shukri Bin Bakri - B032310856  
-> • Che Khuaimanfikri Bin Che Om - B032310698  
-> • Muhammad Haziq Bin Norizan - B032310357  
-> • Muhammad Ammarul Arrif Bin Mohd Arrifin - B032310874  
-> • Muhammad Fikri Bin Abdullah - B032310813
+| Name                                        | Student ID    |
+| ------------------------------------------- | ------------- |
+| Ahmad Shukri Bin Bakri                      | B032310856    |
+| Che Khuaimanfikri Bin Che Om                | B032310698    |
+| Muhammad Haziq Bin Norizan                  | B032310357    |
+| Muhammad Ammarul Arrif Bin Mohd Arrifin     | B032310874    |
+| Muhammad Fikri Bin Abdullah                 | B032310813    |
 
  ### 📌 Project Overview
 
