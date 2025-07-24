@@ -143,6 +143,32 @@ erDiagram
         String role
     }
 
+```mermaid
+erDiagram
+    USER ||--o{ ITEM : "reports"
+    USER {
+        int id PK
+        string username UK
+        string password
+        string role
+        string email
+    }
+    ITEM {
+        int id PK
+        string name
+        string category
+        string description
+        string location
+        string date_reported
+        string image_url
+        string type
+        string status
+        int reported_by FK
+        int matched_with FK
+    }
+    ITEM }|--|| ITEM : "matched_with"
+```
+
 The system consists of two main entities: `USER` and `ITEM`. The relationship between these entities is defined as follows:
 
 - **USER**:
