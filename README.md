@@ -37,12 +37,6 @@ The Lost & Found Management System follows a client-server architecture with dis
 
 ### 📊 Architecture Diagram
 
-graph TD
-    A[LostFound.html (Public User)] -->|HTTP| C[Spring Boot Backend]
-    B[Admin.html (Admin Panel)] -->|HTTP| C
-    C --> D[(MySQL Database)]
-    C --> E[ImgBB API]
-    
 ```mermaid
 graph TD
     A[LostFound.html (Public User)] -->|HTTP| C[Spring Boot Backend]
@@ -56,7 +50,6 @@ graph TD
     style D fill:#d0d0d0,stroke:#000000,stroke-width:2px,color:#000000
     style E fill:#d0d0d0,stroke:#000000,stroke-width:2px,color:#000000
 ```
-
 
 ### 🏗️ System Components
 
